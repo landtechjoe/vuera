@@ -8,22 +8,26 @@
   "main": "dist/vuera.cjs.js",
   "modules": "dist/vuera.es.js",
   "unpkg": "dist/vuera.iife.js",
-  "files": ["dist", "babel.js"],
-  "keywords": ["vue", "react", "interop", "adapter", "migrate", "seamless-integration"],
+  "files": [
+    "dist",
+    "babel.js"
+  ],
+  "keywords": [
+    "vue",
+    "react",
+    "interop",
+    "adapter",
+    "migrate",
+    "seamless-integration"
+  ],
   "peerDependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "vue": ">= 2.2"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-jest": "^21.2.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-latest": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "coveralls": "^3.0.0",
     "cross-env": "^5.2.0",
     "eslint": "3.19.0",
@@ -58,10 +62,36 @@
     "precommit": "lint-staged && yarn run build && git add dist"
   },
   "lint-staged": {
-    "*.json": ["prettier --write", "git add"],
-    "src/**/*.js": ["prettier --write", "eslint --fix", "git add"],
-    "tests/**/*.js": ["prettier --write", "eslint --fix", "git add"],
-    "/*.js": ["prettier --write", "eslint --fix", "git add"],
-    "babel.js": ["prettier --write", "eslint --fix", "git add"]
+    "*.json": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "tests/**/*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "/*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "babel.js": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@babel/core": "^7.20.12",
+    "@babel/plugin-external-helpers": "^7.18.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "core-js": "3.27.2"
   }
 }

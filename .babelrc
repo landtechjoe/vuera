@@ -1,23 +1,20 @@
 {
   "presets": [
     [
-      "latest",
+      "@babel/preset-env",
       {
-        "es2015": {
-          "modules": false
-        }
+        "useBuiltIns": "entry",
+        "corejs": "3.27"
       }
     ],
-    "react"
+    "@babel/preset-react"
   ],
-  "plugins": ["transform-object-rest-spread", "transform-class-properties"],
   "env": {
     "rollup": {
-      "plugins": ["external-helpers"]
+      "plugins": ["@babel/plugin-external-helpers"]
     },
     "test": {
-      "presets": ["es2015"],
-      "plugins": ["transform-class-properties"]
+      "presets": ["es2015"]
     }
   }
 }
