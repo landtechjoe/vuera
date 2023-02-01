@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import VueWrapper from './Vue'
 
 const makeReactContainer = Component => {
@@ -35,9 +35,7 @@ const makeReactContainer = Component => {
       const wrappedChildren = this.wrapVueChildren(children)
 
       return (
-        <Component {...rest}>
-          {children && <VueWrapper component={wrappedChildren} />}
-        </Component>
+        <Component {...rest}>{children && <VueWrapper component={wrappedChildren} />}</Component>
       )
     }
   }
@@ -45,6 +43,11 @@ const makeReactContainer = Component => {
 
 export default {
   props: ['component', 'passedProps'],
+  data: {
+    root: {
+      type: Object,
+    },
+  },
   render (createElement) {
     return createElement('div', { ref: 'react' })
   },
@@ -52,7 +55,8 @@ export default {
     mountReactComponent (component) {
       const Component = makeReactContainer(component)
       const children = this.$slots.default !== undefined ? { children: this.$slots.default } : {}
-      ReactDOM.render(
+      this.root = createRoot(this.$refs.react)
+      this.root.render(
         <Component
           {...this.$props.passedProps}
           {...this.$attrs}
@@ -68,24 +72,28 @@ export default {
     this.mountReactComponent(this.$props.component)
   },
   beforeDestroy () {
-    ReactDOM.unmountComponentAtNode(this.$refs.react)
+    this.root.unmount()
   },
   updated () {
     /**
      * AFAIK, this is the only way to update children. It doesn't seem to be possible to watch
      * `$slots` or `$children`.
      */
-    if (this.$slots.default !== undefined) {
-      this.reactComponentRef.setState({ children: this.$slots.default })
-    } else {
-      this.reactComponentRef.setState({ children: null })
+    if (this.reactComponentRef) {
+      if (this.$slots.default !== undefined) {
+        this.reactComponentRef.setState({ children: this.$slots.default })
+      } else {
+        this.reactComponentRef.setState({ children: null })
+      }
     }
   },
   inheritAttrs: false,
   watch: {
     $attrs: {
       handler () {
-        this.reactComponentRef.setState({ ...this.$attrs })
+        if (this.reactComponentRef) {
+          this.reactComponentRef.setState({ ...this.$attrs })
+        }
       },
       deep: true,
     },
@@ -96,13 +104,17 @@ export default {
     },
     $listeners: {
       handler () {
-        this.reactComponentRef.setState({ ...this.$listeners })
+        if (this.reactComponentRef) {
+          this.reactComponentRef.setState({ ...this.$listeners })
+        }
       },
       deep: true,
     },
     '$props.passedProps': {
       handler () {
-        this.reactComponentRef.setState({ ...this.$props.passedProps })
+        if (this.reactComponentRef) {
+          this.reactComponentRef.setState({ ...this.$props.passedProps })
+        }
       },
       deep: true,
     },
