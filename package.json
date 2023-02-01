@@ -8,18 +8,9 @@
   "main": "dist/vuera.cjs.js",
   "modules": "dist/vuera.es.js",
   "unpkg": "dist/vuera.iife.js",
-  "files": [
-    "dist",
-    "babel.js"
-  ],
-  "keywords": [
-    "vue",
-    "react",
-    "interop",
-    "adapter",
-    "migrate",
-    "seamless-integration"
-  ],
+  "files": ["dist", "babel.js"],
+  "type": "module",
+  "keywords": ["vue", "react", "interop", "adapter", "migrate", "seamless-integration"],
   "peerDependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -46,9 +37,9 @@
     "prettier": "^1.7.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "rollup": "0.51",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup": "3.12.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "vue": "2.5",
     "vue-template-compiler": "2.5",
     "vue-template-es2015-compiler": "^1.5.3"
@@ -62,30 +53,11 @@
     "precommit": "lint-staged && yarn run build && git add dist"
   },
   "lint-staged": {
-    "*.json": [
-      "prettier --write",
-      "git add"
-    ],
-    "src/**/*.js": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ],
-    "tests/**/*.js": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ],
-    "/*.js": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ],
-    "babel.js": [
-      "prettier --write",
-      "eslint --fix",
-      "git add"
-    ]
+    "*.json": ["prettier --write", "git add"],
+    "src/**/*.js": ["prettier --write", "eslint --fix", "git add"],
+    "tests/**/*.js": ["prettier --write", "eslint --fix", "git add"],
+    "/*.js": ["prettier --write", "eslint --fix", "git add"],
+    "babel.js": ["prettier --write", "eslint --fix", "git add"]
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
