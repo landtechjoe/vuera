@@ -1,15 +1,42 @@
 {
-  "parser": "babel-eslint",
-  "extends": ["umbrellio", "umbrellio/react"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": "latest",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "prettier",
+    "plugin:vue/recommended"
+  ],
+  "settings": {
+    "jest": {
+      "version": 29
+    }
+  },
   "rules": {
-    "quotes": ["error", "single"],
-    "jsx-quotes": ["error", "prefer-single"],
+    "react/jsx-uses-react": 2,
+    "quotes": ["error", "double"],
+    "jsx-quotes": ["error", "prefer-double"],
     "new-cap": "off",
     "no-param-reassign": "off",
     "no-new": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "semi": [2, "always"],
+
+    "linebreak-style": [2, "unix"],
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ]
   },
-  "plugins": ["vue"],
+  "plugins": ["vue", "react"],
   "globals": {
     "Symbol": true
   }

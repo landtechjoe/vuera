@@ -1,12 +1,12 @@
-import React from 'react'
+import React from "react";
 
 export default class Component extends React.Component {
-  render () {
+  render() {
     return (
       <div>
         <span>{this.props.message}</span>
         <button onClick={this.props.reset} />
       </div>
-    )
+    );
   }
 }

@@ -1,13 +1,11 @@
 {
+  "extends": ["../.eslintrc.json"],
   "env": {
     "jest": true,
     "browser": true,
     "node": true
   },
-  "rules": {
-    "react/prop-types": "off",
-    "react/prefer-stateless-function": "off"
-  },
+  "plugins": ["jest"],
   "globals": {
     "normalizeHTMLString": true
   }

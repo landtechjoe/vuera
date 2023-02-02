@@ -1,68 +1,66 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Vue from 'vue'
-import { VueWrapper, config } from '../../src'
-import VueComponent from '../fixtures/VueComponent'
-import VueInstanceOptionsComponent, { Plugin } from '../fixtures/VueInstanceOptionsComponent'
-import VueRegisteredComponent from '../fixtures/VueRegisteredComponent'
-import VueSingleFileComponent from '../fixtures/VueSingleFileComponent.vue'
+import React from "react";
+import ReactDOM from "react-dom";
+import Vue from "vue";
+import { VueWrapper, config } from "../../src";
+import VueComponent from "../fixtures/VueComponent";
+import VueInstanceOptionsComponent, { Plugin } from "../fixtures/VueInstanceOptionsComponent";
+import VueRegisteredComponent from "../fixtures/VueRegisteredComponent";
+import VueSingleFileComponent from "../fixtures/VueSingleFileComponent.vue";
 
-const mockReset = () => { return jest.fn() }
+const mockReset = () => {
+  return jest.fn();
+};
 const makeReactInstanceWithVueComponent = (passedComponent, events) => {
   class ReactApp extends React.Component {
-    constructor (props) {
-      super(props)
+    constructor(props) {
+      super(props);
       this.state = {
         message: props.message,
-      }
-      this.mockReset = mockReset()
+      };
+      this.mockReset = mockReset();
     }
 
-    onChange = e => {
-      this.setState({ message: e.currentTarget.value })
-    }
+    onChange = (e) => {
+      this.setState({ message: e.currentTarget.value });
+    };
 
-    render () {
+    render() {
       return (
         <div>
-          <input
-            type='text'
-            value={this.state.message}
-            onChange={this.onChange}
-          />
+          <input type="text" value={this.state.message} onChange={this.onChange} />
           <VueWrapper
-            ref={ref => (this.vueWrapperRef = ref)}
+            ref={(ref) => (this.vueWrapperRef = ref)}
             component={passedComponent}
             on={events}
             message={this.state.message}
             reset={this.mockReset}
           />
         </div>
-      )
+      );
     }
   }
   const instance = ReactDOM.render(
-    <ReactApp message='Message for Vue' />,
-    document.getElementById('root')
-  )
+    <ReactApp message="Message for Vue" />,
+    document.getElementById("root")
+  );
   // React 15 compat
-  document.querySelectorAll('[data-reactroot]').forEach(el => {
-    el.removeAttribute('data-reactroot')
-  })
+  document.querySelectorAll("[data-reactroot]").forEach((el) => {
+    el.removeAttribute("data-reactroot");
+  });
   // React 15.2.0 compat
-  document.querySelectorAll('input[name=""]').forEach(el => {
-    el.removeAttribute('name')
-  })
-  return instance
-}
+  document.querySelectorAll("input[name='']").forEach((el) => {
+    el.removeAttribute("name");
+  });
+  return instance;
+};
 
-describe('VueInReact', () => {
+describe("VueInReact", () => {
   beforeEach(() => {
-    document.body.innerHTML = '<div id="root"></div>'
-  })
+    document.body.innerHTML = "<div id='root'></div>";
+  });
 
-  it('mounts the Vue component correctly', () => {
-    makeReactInstanceWithVueComponent(VueComponent)
+  it("mounts the Vue component correctly", () => {
+    makeReactInstanceWithVueComponent(VueComponent);
     expect(document.body.innerHTML).toBe(
       normalizeHTMLString(
         `<div id="root">
@@ -75,11 +73,11 @@ describe('VueInReact', () => {
           </div>
         </div>`
       )
-    )
-  })
+    );
+  });
 
-  it('mounts the Vue registered component correctly', () => {
-    makeReactInstanceWithVueComponent(VueRegisteredComponent)
+  it("mounts the Vue registered component correctly", () => {
+    makeReactInstanceWithVueComponent(VueRegisteredComponent);
     expect(document.body.innerHTML).toBe(
       normalizeHTMLString(
         `<div id="root">
@@ -92,11 +90,11 @@ describe('VueInReact', () => {
           </div>
         </div>`
       )
-    )
-  })
+    );
+  });
 
-  it('mounts the Vue single file component correctly', () => {
-    makeReactInstanceWithVueComponent(VueSingleFileComponent)
+  it("mounts the Vue single file component correctly", () => {
+    makeReactInstanceWithVueComponent(VueSingleFileComponent);
     expect(document.body.innerHTML).toBe(
       normalizeHTMLString(
         `<div id="root">
@@ -108,93 +106,84 @@ describe('VueInReact', () => {
           </div>
         </div>`
       )
-    )
-  })
+    );
+  });
 
-  it('wires up events correctly', () => {
-    let eventRaised = false
-    const hndlr = () => (eventRaised = true)
-    const events = { 'custom-event': hndlr }
-    makeReactInstanceWithVueComponent(VueSingleFileComponent, events)
-    expect(eventRaised).toBe(false)
-    document.querySelector('button').click()
-    expect(eventRaised).toBe(true)
-  })
+  it("wires up events correctly", () => {
+    let eventRaised = false;
+    const hndlr = () => (eventRaised = true);
+    const events = { "custom-event": hndlr };
+    makeReactInstanceWithVueComponent(VueSingleFileComponent, events);
+    expect(eventRaised).toBe(false);
+    document.querySelector("button").click();
+    expect(eventRaised).toBe(true);
+  });
 
-  it('synchronises props', () => {
-    const reactAppInstance = makeReactInstanceWithVueComponent(VueComponent)
-    reactAppInstance.setState({ message: 'New message!' })
-    expect(document.body.innerHTML).toContain('New message!')
-  })
+  it("synchronises props", () => {
+    const reactAppInstance = makeReactInstanceWithVueComponent(VueComponent);
+    reactAppInstance.setState({ message: "New message!" });
+    expect(document.body.innerHTML).toContain("New message!");
+  });
 
-  test('functions work', () => {
-    const reactAppInstance = makeReactInstanceWithVueComponent(VueComponent)
-    expect(reactAppInstance.mockReset.mock.calls.length).toBe(0)
-    document.querySelector('button').click()
-    expect(reactAppInstance.mockReset.mock.calls.length).toBe(1)
-  })
+  test("functions work", () => {
+    const reactAppInstance = makeReactInstanceWithVueComponent(VueComponent);
+    expect(reactAppInstance.mockReset.mock.calls.length).toBe(0);
+    document.querySelector("button").click();
+    expect(reactAppInstance.mockReset.mock.calls.length).toBe(1);
+  });
 
-  test('when React component is unmounted, Vue instance gets destroyed', () => {
-    const reactAppInstance = makeReactInstanceWithVueComponent(VueComponent)
-    const vm = reactAppInstance.vueWrapperRef.vueInstance
+  test("when React component is unmounted, Vue instance gets destroyed", () => {
+    const reactAppInstance = makeReactInstanceWithVueComponent(VueComponent);
+    const vm = reactAppInstance.vueWrapperRef.vueInstance;
 
-    expect(vm._isDestroyed).toBe(false)
-    ReactDOM.unmountComponentAtNode(document.getElementById('root'))
-    expect(vm._isDestroyed).toBe(true)
-  })
+    expect(vm._isDestroyed).toBe(false);
+    ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+    expect(vm._isDestroyed).toBe(true);
+  });
 
-  describe('children', () => {
+  describe("children", () => {
     const componentWithChildren = {
-      render (createElement) {
-        return createElement('div', this.$slots.default)
+      render(createElement) {
+        return createElement("div", this.$slots.default);
       },
-    }
+    };
 
     const render = (...children) => {
       ReactDOM.render(
         <VueWrapper component={componentWithChildren}>{children}</VueWrapper>,
-        document.getElementById('root')
-      )
+        document.getElementById("root")
+      );
       // React 15 compat
-      document.querySelectorAll('[data-reactroot]').forEach(el => {
-        el.removeAttribute('data-reactroot')
-      })
-      document.body.innerHTML = document.body.innerHTML.replace(
-        /<!--[\s\S]*?-->/g,
-        ''
-      )
-    }
+      document.querySelectorAll("[data-reactroot]").forEach((el) => {
+        el.removeAttribute("data-reactroot");
+      });
+      document.body.innerHTML = document.body.innerHTML.replace(/<!--[\s\S]*?-->/g, "");
+    };
 
-    it('works with a string', () => {
-      render('Hello')
-      expect(document.querySelector('#root div div').innerHTML).toBe(
-        '<div>Hello</div>'
-      )
-    })
+    it("works with a string", () => {
+      render("Hello");
+      expect(document.querySelector("#root div div").innerHTML).toBe("<div>Hello</div>");
+    });
 
-    it('works with a React component', () => {
-      render(<div>Hello</div>)
-      expect(document.querySelector('#root div div').innerHTML).toBe(
-        '<div><div>Hello</div></div>'
-      )
-    })
+    it("works with a React component", () => {
+      render(<div>Hello</div>);
+      expect(document.querySelector("#root div div").innerHTML).toBe("<div><div>Hello</div></div>");
+    });
 
-    it('works with a React component', () => {
+    it("works with a React component", () => {
+      render(<VueWrapper component={componentWithChildren}>wow so nested</VueWrapper>);
+      expect(document.querySelector("#root div div").innerHTML).toBe(
+        "<div><div><div><div>wow so nested</div></div></div></div>"
+      );
+    });
+
+    it("works with multiple children", () => {
       render(
-        <VueWrapper component={componentWithChildren}>wow so nested</VueWrapper>
-      )
-      expect(document.querySelector('#root div div').innerHTML).toBe(
-        '<div><div><div><div>wow so nested</div></div></div></div>'
-      )
-    })
-
-    it('works with multiple children', () => {
-      render(
-        'Hi there',
+        "Hi there",
         <div>Hello</div>,
         <VueWrapper component={componentWithChildren}>wow so nested</VueWrapper>
-      )
-      expect(document.querySelector('#root div div').innerHTML).toBe(
+      );
+      expect(document.querySelector("#root div div").innerHTML).toBe(
         normalizeHTMLString(
           `<div>
             Hi there
@@ -204,22 +193,22 @@ describe('VueInReact', () => {
             </div></div></div>
           </div>`
         )
-      )
-    })
-  })
+      );
+    });
+  });
 
-  describe('config', () => {
+  describe("config", () => {
     afterEach(() => {
-      config.vueInstanceOptions = {}
-    })
+      config.vueInstanceOptions = {};
+    });
 
-    it('adds vue instance options', () => {
-      Vue.use(Plugin)
+    it("adds vue instance options", () => {
+      Vue.use(Plugin);
 
-      config.vueInstanceOptions = { foo: 'New message!', bar: 'Other message' }
-      makeReactInstanceWithVueComponent(VueInstanceOptionsComponent)
-      expect(document.body.innerHTML).toContain('New message!')
-      expect(document.body.innerHTML).toContain('Other message')
-    })
-  })
-})
+      config.vueInstanceOptions = { foo: "New message!", bar: "Other message" };
+      makeReactInstanceWithVueComponent(VueInstanceOptionsComponent);
+      expect(document.body.innerHTML).toContain("New message!");
+      expect(document.body.innerHTML).toContain("Other message");
+    });
+  });
+});

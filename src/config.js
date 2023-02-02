@@ -1,7 +1,7 @@
-export function defaultConfig () {
+export function defaultConfig() {
   return {
     vueInstanceOptions: {},
-  }
+  };
 }
 
-export default defaultConfig()
+export default defaultConfig();

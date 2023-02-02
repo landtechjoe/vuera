@@ -245,9 +245,9 @@ function _toPropertyKey(arg) {
 
 var _excluded$1 = ["component"],
   _excluded2 = ["component", "on"];
-var VUE_COMPONENT_NAME = 'vuera-internal-component-name';
+var VUE_COMPONENT_NAME = "vuera-internal-component-name";
 var wrapReactChildren = function wrapReactChildren(createElement, children) {
-  return createElement('vuera-internal-react-wrapper', {
+  return createElement("vuera-internal-react-wrapper", {
     props: {
       component: function component() {
         return /*#__PURE__*/React.createElement("div", null, children);
@@ -321,6 +321,7 @@ var VueContainer = /*#__PURE__*/function (_React$Component) {
       // `this` refers to Vue instance in the constructor
       reactThisBinding.vueInstance = new Vue(_objectSpread2(_objectSpread2({
         el: targetElement,
+        components: (_components = {}, _defineProperty(_components, VUE_COMPONENT_NAME, component), _defineProperty(_components, "vuera-internal-react-wrapper", ReactWrapper), _components),
         data: props
       }, config.vueInstanceOptions), {}, {
         render: function render(createElement) {
@@ -328,8 +329,7 @@ var VueContainer = /*#__PURE__*/function (_React$Component) {
             props: this.$data,
             on: on
           }, [wrapReactChildren(createElement, this.children)]);
-        },
-        components: (_components = {}, _defineProperty(_components, VUE_COMPONENT_NAME, component), _defineProperty(_components, 'vuera-internal-react-wrapper', ReactWrapper), _components)
+        }
       }));
     }
   }, {
@@ -378,7 +378,7 @@ var makeReactContainer = function makeReactContainer(Component) {
       value: function wrapVueChildren(children) {
         return {
           render: function render(createElement) {
-            return createElement('div', children);
+            return createElement("div", children);
           }
         };
       }
@@ -387,7 +387,7 @@ var makeReactContainer = function makeReactContainer(Component) {
       value: function render() {
         var _this$state = this.state,
           children = _this$state.children;
-          _this$state[''];
+          _this$state[""];
           var rest = _objectWithoutProperties(_this$state, _excluded);
         var wrappedChildren = this.wrapVueChildren(children);
         return /*#__PURE__*/React.createElement(Component, rest, children && /*#__PURE__*/React.createElement(VueContainer, {
@@ -396,18 +396,18 @@ var makeReactContainer = function makeReactContainer(Component) {
       }
     }]);
     return ReactInVue;
-  }(React.Component), _defineProperty(_class, "displayName", "ReactInVue".concat(Component.displayName || Component.name || 'Component')), _class;
+  }(React.Component), _defineProperty(_class, "displayName", "ReactInVue".concat(Component.displayName || Component.name || "Component")), _class;
 };
 var ReactWrapper = {
-  props: ['component', 'passedProps'],
+  props: ["component", "passedProps"],
   data: {
     root: {
       type: Object
     }
   },
   render: function render(createElement) {
-    return createElement('div', {
-      ref: 'react'
+    return createElement("div", {
+      ref: "react"
     });
   },
   methods: {
@@ -458,7 +458,7 @@ var ReactWrapper = {
       },
       deep: true
     },
-    '$props.component': {
+    "$props.component": {
       handler: function handler(newValue) {
         this.mountReactComponent(newValue);
       }
@@ -471,7 +471,7 @@ var ReactWrapper = {
       },
       deep: true
     },
-    '$props.passedProps': {
+    "$props.passedProps": {
       handler: function handler() {
         if (this.reactComponentRef) {
           this.reactComponentRef.setState(_objectSpread2({}, this.$props.passedProps));
@@ -483,13 +483,13 @@ var ReactWrapper = {
 };
 
 function isReactComponent(component) {
-  if (_typeof(component) === 'object' && !isReactForwardReference(component)) {
+  if (_typeof(component) === "object" && !isReactForwardReference(component)) {
     return false;
   }
-  return !(typeof component === 'function' && component.prototype && (component.prototype.constructor["super"] && component.prototype.constructor["super"].isVue || component.prototype instanceof Vue));
+  return !(typeof component === "function" && component.prototype && (component.prototype.constructor["super"] && component.prototype.constructor["super"].isVue || component.prototype instanceof Vue));
 }
 function isReactForwardReference(component) {
-  return component.$$typeof && component.$$typeof.toString() === 'Symbol(react.forward_ref)';
+  return component.$$typeof && component.$$typeof.toString() === "Symbol(react.forward_ref)";
 }
 
 function VueResolver(component) {
@@ -497,10 +497,10 @@ function VueResolver(component) {
     components: {
       ReactWrapper: ReactWrapper
     },
-    props: ['passedProps'],
+    props: ["passedProps"],
     inheritAttrs: false,
     render: function render(createElement) {
-      return createElement('react-wrapper', {
+      return createElement("react-wrapper", {
         props: {
           component: component,
           passedProps: this.$props.passedProps
@@ -516,6 +516,7 @@ function VueResolver(component) {
  * This mixin automatically wraps all React components into Vue.
  */
 var VuePlugin = {
+  // eslint-disable-next-line no-unused-vars
   install: function install(Vue, options) {
     /**
      * We define a custom merging strategy for the `components` field. This strategy really just

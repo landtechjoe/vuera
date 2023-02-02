@@ -1,14 +1,14 @@
 export default {
-  $$typeof: Symbol('react.forward_ref'),
+  $$typeof: Symbol("react.forward_ref"),
   attrs: [],
   componentStyle: {
-    rules: ['background: red;'],
+    rules: ["background: red;"],
     isStatic: false,
-    componentId: 'sc-dnqmqq',
-    lastClassName: 'boyWDb',
+    componentId: "sc-dnqmqq",
+    lastClassName: "boyWDb",
   },
-  displayName: 'styled.h3',
+  displayName: "styled.h3",
   foldedComponentIds: [],
-  styledComponentId: 'sc-dnqmqq',
-  target: 'h3',
-}
+  styledComponentId: "sc-dnqmqq",
+  target: "h3",
+};

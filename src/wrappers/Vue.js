@@ -1,54 +1,54 @@
-import React from 'react'
-import Vue from 'vue'
-import ReactWrapper from './React'
-import { config } from '../../src'
+import React from "react";
+import Vue from "vue";
+import ReactWrapper from "./React";
+import { config } from "../../src";
 
-const VUE_COMPONENT_NAME = 'vuera-internal-component-name'
+const VUE_COMPONENT_NAME = "vuera-internal-component-name";
 
 const wrapReactChildren = (createElement, children) =>
-  createElement('vuera-internal-react-wrapper', {
+  createElement("vuera-internal-react-wrapper", {
     props: {
       component: () => <div>{children}</div>,
     },
-  })
+  });
 
 export default class VueContainer extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
 
     /**
      * We have to track the current Vue component so that we can reliably catch updates to the
      * `component` prop.
      */
-    this.currentVueComponent = props.component
+    this.currentVueComponent = props.component;
 
     /**
      * Modify createVueInstance function to pass this binding correctly. Doing this in the
      * constructor to avoid instantiating functions in render.
      */
-    const createVueInstance = this.createVueInstance
-    const self = this
+    const createVueInstance = this.createVueInstance;
+    const self = this;
     this.createVueInstance = function (element, component, prevComponent) {
-      createVueInstance(element, self, component, prevComponent)
-    }
+      createVueInstance(element, self, component, prevComponent);
+    };
   }
 
-  componentWillReceiveProps (nextProps) {
-    const { component, ...props } = nextProps
+  componentWillReceiveProps(nextProps) {
+    const { component, ...props } = nextProps;
 
     if (this.currentVueComponent !== component) {
-      this.updateVueComponent(this.props.component, component)
+      this.updateVueComponent(this.props.component, component);
     }
     /**
      * NOTE: we're not comparing this.props and nextProps here, because I didn't want to write a
      * function for deep object comparison. I don't know if this hurts performance a lot, maybe
      * we do need to compare those objects.
      */
-    Object.assign(this.vueInstance.$data, props)
+    Object.assign(this.vueInstance.$data, props);
   }
 
-  componentWillUnmount () {
-    this.vueInstance.$destroy()
+  componentWillUnmount() {
+    this.vueInstance.$destroy();
   }
 
   /**
@@ -59,15 +59,19 @@ export default class VueContainer extends React.Component {
    * @param {HTMLElement} targetElement - element to attact the Vue instance to
    * @param {ReactInstance} reactThisBinding - current instance of VueContainer
    */
-  createVueInstance (targetElement, reactThisBinding) {
-    const { component, on, ...props } = reactThisBinding.props
+  createVueInstance(targetElement, reactThisBinding) {
+    const { component, on, ...props } = reactThisBinding.props;
 
     // `this` refers to Vue instance in the constructor
     reactThisBinding.vueInstance = new Vue({
       el: targetElement,
+      components: {
+        [VUE_COMPONENT_NAME]: component,
+        "vuera-internal-react-wrapper": ReactWrapper,
+      },
       data: props,
       ...config.vueInstanceOptions,
-      render (createElement) {
+      render(createElement) {
         return createElement(
           VUE_COMPONENT_NAME,
           {
@@ -75,26 +79,22 @@ export default class VueContainer extends React.Component {
             on,
           },
           [wrapReactChildren(createElement, this.children)]
-        )
+        );
       },
-      components: {
-        [VUE_COMPONENT_NAME]: component,
-        'vuera-internal-react-wrapper': ReactWrapper,
-      },
-    })
+    });
   }
 
-  updateVueComponent (prevComponent, nextComponent) {
-    this.currentVueComponent = nextComponent
+  updateVueComponent(prevComponent, nextComponent) {
+    this.currentVueComponent = nextComponent;
 
     /**
      * Replace the component in the Vue instance and update it.
      */
-    this.vueInstance.$options.components[VUE_COMPONENT_NAME] = nextComponent
-    this.vueInstance.$forceUpdate()
+    this.vueInstance.$options.components[VUE_COMPONENT_NAME] = nextComponent;
+    this.vueInstance.$forceUpdate();
   }
 
-  render () {
-    return <div ref={this.createVueInstance} />
+  render() {
+    return <div ref={this.createVueInstance} />;
   }
 }
