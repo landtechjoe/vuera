@@ -1,8 +1,8 @@
 {
-  "name": "vuera",
+  "name": "@landtechnologies/vuera",
   "description": "Use React in Vue and Vue in React",
-  "version": "0.2.7",
-  "repository": "akxcv/vuera",
+  "version": "0.3.0",
+  "repository": "landtechnologies/apps",
   "author": "Alexander Komarov <ak@akxcv.com>",
   "license": "MIT",
   "main": "dist/vuera.cjs.js",
@@ -12,8 +12,8 @@
   "type": "module",
   "keywords": ["vue", "react", "interop", "adapter", "migrate", "seamless-integration"],
   "peerDependencies": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": ">=18.2.0",
+    "react-dom": ">=18.2.0",
     "vue": ">= 2.2"
   },
   "devDependencies": {

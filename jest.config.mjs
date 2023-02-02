@@ -1,5 +1,5 @@
 /* eslint-env node */
-module.exports = {
+export default {
   browser: true,
   collectCoverageFrom: ['src/**/*.js', 'babel.js'],
   setupFiles: ['./tests/__setup__.js'],
